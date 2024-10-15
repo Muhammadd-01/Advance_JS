@@ -23,7 +23,7 @@ myArray.shift();
 // const myn2 = myArray.includes(3)
 // const myn2 = myArray.indexOf(5)
 
-// console.log(myn2);
+console.log(myn2);
 
 console.log('A', myArray)
 

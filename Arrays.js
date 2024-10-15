@@ -15,7 +15,7 @@ myArray.pop();
 myArray.unshift(48);
 myArray.shift();
 
-
+// Different methods of Array
 
 
 

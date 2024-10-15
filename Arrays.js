@@ -3,17 +3,17 @@
 const myArray = [0,1,2,4,5];
 
 const newArray = ['Affan', 'Alam'];
-// console.log(myArray[2]);
-// console.log(newArray[1]);
+console.log(myArray[2]);
+console.log(newArray[1]);
 
-//Array Methods
+// Array Methods
 
 
-// myArray.push(6);
-// myArray.push(7);
-// myArray.pop();
-// myArray.unshift(48);
-// myArray.shift();
+myArray.push(6);
+myArray.push(7);
+myArray.pop();
+myArray.unshift(48);
+myArray.shift();
 
 
 

@@ -6,10 +6,11 @@ const newArray = ['Affan', 'Alam'];
 console.log(myArray[2]);
 console.log(newArray[1]);
 
-// Array Methods
+// Array Methodss
 
 
 myArray.push(6);
+myArray.push(5);
 myArray.push(7);
 myArray.pop();
 myArray.unshift(48);

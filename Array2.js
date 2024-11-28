@@ -1,13 +1,21 @@
 const marvelHeroes = [ "thor", "ironman", "spiderman" ];
 const dcHeroes = [ "superman",  "flash", "batman" ];
 
+// Push Function
 // marvelHeroes.push(dcHeroes);
 // console.log(marvelHeroes);
 // console.log(marvelHeroes[3][1]);
 
-
-// const allHeroes = marvelHeroes.concat(dcHeroes);
+// Concat Function
+const allHeroes = marvelHeroes.concat(dcHeroes);
 // console.log(allHeroes);
 
+
+// Spread Function
 const allNewHeroes = [...marvelHeroes, ...dcHeroes];
-console.log(allNewHeroes);
+// console.log(allNewHeroes);
+
+// Flat Function
+const anotherArray = [1,2,3,[4,5,6],7,8,[9,10,[11,12]]];
+const realArray = anotherArray.flat(Infinity);
+console.log(realArray);

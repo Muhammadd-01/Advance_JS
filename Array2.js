@@ -19,3 +19,18 @@ const allNewHeroes = [...marvelHeroes, ...dcHeroes];
 const anotherArray = [1,2,3,[4,5,6],7,8,[9,10,[11,12]]];
 const realArray = anotherArray.flat(Infinity);
 console.log(realArray);
+
+
+// Array check function
+ 
+
+// console.log(Array.isArray("affan"));
+
+
+//Array convert function
+
+// console.log(Array.from("affan"));
+
+//Interesting case for interviews
+
+console.log(Array.from({name : "affan"})); 

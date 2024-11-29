@@ -7,5 +7,6 @@ const data = {
     name: "affan",
     age: "19",
     location: "Karachi",
-    isLoggedIn: true
+    isLoggedIn: true,
+    lastLoginDays : ["Monday", "Tuesday"],
 }

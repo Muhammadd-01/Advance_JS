@@ -28,6 +28,24 @@ data.email = "affan@gmail.com";
 
 Object.freeze(data);
 
-data.email = "affan122@gmail.com"
+// data.email = "affan122@gmail.com"
 
 console.log(data);
+
+// Add function in to the object
+
+data.greeting = function(){
+    console.log("Assalamualaikum");
+}
+console.log(data.greeting());
+
+
+//String interpolation
+
+
+data.greetingTwo = function(){
+    console.log(`Assalamualaikum , ${this.name}`);
+}
+
+
+ console.log(data.greetingTwo());

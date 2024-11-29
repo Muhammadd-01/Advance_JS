@@ -15,7 +15,7 @@ const data = {
     lastLoginDays : ["Monday", "Tuesday"],
 }
 
-console.log(data.name); // One method to acceess data
+console.log(data.name); // One method to acceess data and mostly used
 console.log(data["full name"]); // Another method to access data
 console.log(data[mySym]); // method to access symbol
 

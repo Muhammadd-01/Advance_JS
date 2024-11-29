@@ -18,3 +18,16 @@ const data = {
 console.log(data.name); // One method to acceess data
 console.log(data["full name"]); // Another method to access data
 console.log(data[mySym]); // method to access symbol
+
+
+//Change the value of a property
+
+data.email = "affan@gmail.com";
+
+// Freeze the object so no one can change it
+
+Object.freeze(data);
+
+data.email = "affan122@gmail.com"
+
+console.log(data);

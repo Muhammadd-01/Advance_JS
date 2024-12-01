@@ -2,4 +2,8 @@
 
 const tinderUser = {}  // non singleton object
 
-console.log(tinderUser);
+
+tinderUser.id = "123abc"
+tinderUser.name = "Affan"
+tinderUser.age = 25``
+// console.log(tinderUser);

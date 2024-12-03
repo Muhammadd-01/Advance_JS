@@ -20,16 +20,16 @@ const {name: firtName} = myObj // Another Method
 // Json Syntax in both objects and arrays
 
 // In Objects
-{
-    "name" : "Affan",
-    "age" : 20,
-    "city" : "Karachi"
-}
+// {
+//     "name" : "Affan",
+//     "age" : 20,
+//     "city" : "Karachi"
+// }
 
 // In Arrays
 
-[
-    {},
-    {},
-    {}
-]
+// [
+//     {},
+//     {},
+//     {}
+// ]

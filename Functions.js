@@ -25,6 +25,19 @@ function add(num1, num2){
     return num1 + num2;
 }
 const result = add(10,20);
-console.log("Result:", result);
+//console.log("Result:", result);
 
 
+function LogInUserMessage(username){
+    if(!username){
+
+        console.log("Please enter a Username");
+        
+    }
+    else{
+    return `${username} has logged in successfully.`
+
+    }
+}
+
+console.log(LogInUserMessage("Affan"));

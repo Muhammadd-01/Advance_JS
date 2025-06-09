@@ -1,35 +1,21 @@
-// De-Structuring Object
+// Object De-Structure 
 
+const person = {
+    name: "Affan",
+    age: 20,
 
-const myObj = {
-    name : "Affan",
-    age : 20,
-    city : "Karachi"
 }
 
-// console.log(myObj.age);  // Simple Method
+
+//console.log(person.name);
 
 
-const {name} = myObj // Destructuring Method
-const {name: firtName} = myObj // Another Method
-// console.log(name);  /
+const {name: a} = person;
 
-// console.log(firtName);
+//console.log(name);
 
 
-// Json Syntax in both objects and arrays
+console.log(a);
 
-// In Objects
-// {
-//     "name" : "Affan",
-//     "age" : 20,
-//     "city" : "Karachi"
-// }
 
-// In Arrays
 
-// [
-//     {},
-//     {},
-//     {}
-// ]

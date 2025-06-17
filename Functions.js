@@ -28,7 +28,7 @@ const result = add(10,20);
 //console.log("Result:", result);
 
 
-function LogInUserMessage(username = "Unknown User"){
+function LogInUserMessage(username){
     if(!username){
 
         console.log("Please enter a Username");
@@ -40,4 +40,4 @@ function LogInUserMessage(username = "Unknown User"){
     }
 }
 
-console.log(LogInUserMessage());
+console.log(LogInUserMessage(username));

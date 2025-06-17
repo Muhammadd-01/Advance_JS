@@ -40,7 +40,7 @@ function LogInUserMessage(username){
     }
 }
 
-console.log(LogInUserMessage(username));
+console.log(LogInUserMessage("Affan"));
 // console.log(LogInUserMessage());
 
 

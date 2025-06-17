@@ -40,9 +40,7 @@ function LogInUserMessage(username){
     }
 }
 
-<<<<<<< HEAD
 console.log(LogInUserMessage(username));
-=======
 // console.log(LogInUserMessage());
 
 
@@ -104,4 +102,3 @@ console.log(arraySecondElement([
     10, 20, 30, 40, 50
 ]));
 
->>>>>>> 0ef39a21eda06dd37b7b4048053800609e62b86a

@@ -40,4 +40,68 @@ function LogInUserMessage(username){
     }
 }
 
+<<<<<<< HEAD
 console.log(LogInUserMessage(username));
+=======
+// console.log(LogInUserMessage());
+
+
+//  Rest Operator in funcions
+
+
+function addTwoNumbers(...num1){
+    return num1;
+    
+}
+
+
+// console.log(addTwoNumbers(10, 545,4565,659659,65965));
+
+
+//Another way to use rest operator
+
+function addNumbers(num1, num2, ...num3){
+    console.log(num3);
+}
+
+// addNumbers(15,61,57,4654,8564)
+
+
+//How to use Object in functions
+
+
+const user={
+    name: "Affan",
+    age: 20
+}
+
+
+function userDetails(details){
+    return`Name of the user is ${details.name} and age is ${details.age}.`;
+}
+
+// console.log(userDetails(user));
+
+console.log(userDetails({
+    name: "Unknonw",
+    age:0
+}));
+
+
+// How to use Array in functions
+
+const numbers =[10, 41, 54 ,44]
+
+
+function  arraySecondElement(array){
+    return array[2];
+}
+
+// console.log(arraySecondElement(numbers));
+
+
+console.log(arraySecondElement([
+    10, 20, 30, 40, 50
+]));
+
+>>>>>>> 0ef39a21eda06dd37b7b4048053800609e62b86a

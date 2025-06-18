@@ -102,3 +102,8 @@ console.log(arraySecondElement([
     10, 20, 30, 40, 50
 ]));
 
+
+
+
+//This keyword and Arrow functions
+

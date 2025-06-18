@@ -112,8 +112,13 @@ const userDetail = {
     age: 20,
     welcomeMessage: function(){
         console.log(`Welcome ${this.name}`);
+
+        console.log(this);
+        
         
     }
 }
 
-userDetail.welcomeMessage();
+// userDetail.welcomeMessage();
+
+console.log(this);

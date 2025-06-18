@@ -121,4 +121,19 @@ const userDetail = {
 
 // userDetail.welcomeMessage();
 
-console.log(this);
+// console.log(this);
+
+
+//Arrow function
+
+// const addNum= (num1, num2)=>{
+//     return num1 + num2;
+// }
+// const addNum= (num1, num2)=> num1 + num2;
+// const addNum= (num1, num2)=> (num1 + num2)
+const addNum = (num1, num2)=> ({ name:'Affan' })
+
+
+
+
+console.log(addNum(10,20));

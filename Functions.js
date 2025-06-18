@@ -107,3 +107,13 @@ console.log(arraySecondElement([
 
 //This keyword and Arrow functions
 
+const userDetail = {
+    name: "Affan",
+    age: 20,
+    welcomeMessage: function(){
+        console.log(`Welcome ${this.name}`);
+        
+    }
+}
+
+userDetail.welcomeMessage();

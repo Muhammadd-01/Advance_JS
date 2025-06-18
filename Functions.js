@@ -119,4 +119,8 @@ const obj = {
   },
 };
 
-obj.method();
+// obj.method();
+
+
+const adds =(a , b)=> a + b 
+console.log(add(1,2));

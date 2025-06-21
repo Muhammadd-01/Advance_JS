@@ -8,6 +8,14 @@ const truthyValues = [true, 1, "Hello", {}, [], function() {}, -1];
 
 
 
+//How to check if Array is empty
+
+const emptyArray= [];
+
+if (emptyArray.length ===0) {
+    console.log("Array is empty");
+    
+}
 
 
 

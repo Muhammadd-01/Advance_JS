@@ -7,7 +7,7 @@ if (true) {
 }
 
 
-let score = 10;
+let score = 100;
 
 if(score >= 90){
     console.log("Grade A");
@@ -23,4 +23,5 @@ if(score >= 90){
     
 }
 
+if(score !=10) console.log("You are right"), console.log("You are wrong");
 

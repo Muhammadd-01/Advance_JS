@@ -32,3 +32,11 @@ if (Object.keys(emptyObj).length ===0) {
     console.log("Object is empty");
     
 }
+
+
+//Nullish Coalescing Operator
+
+let val1;
+
+val1 = null ?? "Default Value";
+console.log(val1); // Output: "Default Value"

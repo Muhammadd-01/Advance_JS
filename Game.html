@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle Royale Shooter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2c5530, #1a3a1e);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: 1200px;
+            max-height: 800px;
+            border: 3px solid #4a6741;
+            background: radial-gradient(circle at center, #3d5a32, #2a4225);
+            overflow: hidden;
+        }
+
+        #gameCanvas {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+
+        #hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #fff;
+            font-size: 18px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            z-index: 10;
+        }
+
+        #crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        #crosshair::before,
+        #crosshair::after {
+            content: '';
+            position: absolute;
+            background: #ff4444;
+            box-shadow: 0 0 5px rgba(255, 68, 68, 0.8);
+        }
+
+        #crosshair::before {
+            top: 50%;
+            left: 40%;
+            width: 20%;
+            height: 2px;
+            transform: translateY(-50%);
+        }
+
+        #crosshair::after {
+            left: 50%;
+            top: 40%;
+            width: 2px;
+            height: 20%;
+            transform: translateX(-50%);
+        }
+
+        #gameOver {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #fff;
+            z-index: 20;
+        }
+
+        #gameOver h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+        }
+
+        #restartBtn {
+            padding: 15px 30px;
+            font-size: 20px;
+            background: linear-gradient(45deg, #4a6741, #5d7a52);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        #restartBtn:hover {
+            background: linear-gradient(45deg, #5d7a52, #6b8a5e);
+            transform: scale(1.05);
+        }
+
+        #instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .minimap {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 150px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #4a6741;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+        <div id="crosshair"></div>
+        
+        <div id="hud">
+            <div>Health: <span id="health">100</span></div>
+            <div>Ammo: <span id="ammo">30</span>/90</div>
+            <div>Enemies: <span id="enemies">10</span></div>
+            <div>Score: <span id="score">0</span></div>
+        </div>
+
+        <div class="minimap">
+            <canvas id="minimap" width="150" height="150"></canvas>
+        </div>
+
+        <div id="instructions">
+            WASD: Move | Mouse: Aim | Click: Shoot | R: Reload<br>
+            Survive and eliminate all enemies!
+        </div>
+
+        <div id="gameOver">
+            <h2 id="gameOverText">Game Over</h2>
+            <p id="finalScore">Final Score: 0</p>
+            <button id="restartBtn">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        class Game {
+            constructor() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.minimap = document.getElementById('minimap');
+                this.minimapCtx = this.minimap.getContext('2d');
+                
+                this.canvas.width = this.canvas.offsetWidth;
+                this.canvas.height = this.canvas.offsetHeight;
+                
+                this.player = new Player(this.canvas.width / 2, this.canvas.height / 2);
+                this.enemies = [];
+                this.bullets = [];
+                this.particles = [];
+                
+                this.keys = {};
+                this.mouse = { x: 0, y: 0 };
+                this.gameRunning = true;
+                this.score = 0;
+                
+                this.spawnEnemies(10);
+                this.setupEventListeners();
+                this.gameLoop();
+            }
+
+            setupEventListeners() {
+                document.addEventListener('keydown', (e) => {
+                    this.keys[e.key.toLowerCase()] = true;
+                    if (e.key.toLowerCase() === 'r') {
+                        this.player.reload();
+                    }
+                });
+
+                document.addEventListener('keyup', (e) => {
+                    this.keys[e.key.toLowerCase()] = false;
+                });
+
+                this.canvas.addEventListener('mousemove', (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    this.mouse.x = e.clientX - rect.left;
+                    this.mouse.y = e.clientY - rect.top;
+                });
+
+                this.canvas.addEventListener('click', (e) => {
+                    if (this.gameRunning) {
+                        this.player.shoot(this.mouse.x, this.mouse.y, this.bullets);
+                    }
+                });
+
+                document.getElementById('restartBtn').addEventListener('click', () => {
+                    this.restart();
+                });
+            }
+
+            spawnEnemies(count) {
+                for (let i = 0; i < count; i++) {
+                    let x, y;
+                    do {
+                        x = Math.random() * this.canvas.width;
+                        y = Math.random() * this.canvas.height;
+                    } while (this.distanceTo(x, y, this.player.x, this.player.y) < 200);
+                    
+                    this.enemies.push(new Enemy(x, y));
+                }
+            }
+
+            distanceTo(x1, y1, x2, y2) {
+                return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+            }
+
+            update() {
+                if (!this.gameRunning) return;
+
+                // Player movement
+                let dx = 0, dy = 0;
+                if (this.keys['w'] || this.keys['arrowup']) dy -= 1;
+                if (this.keys['s'] || this.keys['arrowdown']) dy += 1;
+                if (this.keys['a'] || this.keys['arrowleft']) dx -= 1;
+                if (this.keys['d'] || this.keys['arrowright']) dx += 1;
+
+                this.player.update(dx, dy, this.canvas.width, this.canvas.height);
+
+                // Update enemies
+                this.enemies.forEach(enemy => {
+                    enemy.update(this.player.x, this.player.y, this.canvas.width, this.canvas.height);
+                    
+                    // Enemy shooting
+                    if (Math.random() < 0.01 && this.distanceTo(enemy.x, enemy.y, this.player.x, this.player.y) < 300) {
+                        enemy.shoot(this.player.x, this.player.y, this.bullets);
+                    }
+                });
+
+                // Update bullets
+                this.bullets = this.bullets.filter(bullet => {
+                    bullet.update();
+                    
+                    // Check bounds
+                    if (bullet.x < 0 || bullet.x > this.canvas.width || 
+                        bullet.y < 0 || bullet.y > this.canvas.height) {
+                        return false;
+                    }
+
+                    // Check collisions
+                    if (bullet.owner === 'player') {
+                        for (let i = this.enemies.length - 1; i >= 0; i--) {
+                            if (this.distanceTo(bullet.x, bullet.y, this.enemies[i].x, this.enemies[i].y) < 20) {
+                                this.enemies[i].takeDamage(25);
+                                this.createParticles(bullet.x, bullet.y, '#ff4444');
+                                
+                                if (this.enemies[i].health <= 0) {
+                                    this.enemies.splice(i, 1);
+                                    this.score += 100;
+                                }
+                                return false;
+                            }
+                        }
+                    } else {
+                        if (this.distanceTo(bullet.x, bullet.y, this.player.x, this.player.y) < 20) {
+                            this.player.takeDamage(10);
+                            this.createParticles(bullet.x, bullet.y, '#ff0000');
+                            return false;
+                        }
+                    }
+                    
+                    return true;
+                });
+
+                // Update particles
+                this.particles = this.particles.filter(particle => {
+                    particle.update();
+                    return particle.life > 0;
+                });
+
+                // Check win/lose conditions
+                if (this.enemies.length === 0) {
+                    this.endGame('Victory!');
+                } else if (this.player.health <= 0) {
+                    this.endGame('Game Over!');
+                }
+
+                this.updateHUD();
+            }
+
+            createParticles(x, y, color) {
+                for (let i = 0; i < 5; i++) {
+                    this.particles.push(new Particle(x, y, color));
+                }
+            }
+
+            render() {
+                // Clear canvas
+                this.ctx.fillStyle = '#2a4225';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+                // Draw environment
+                this.drawEnvironment();
+
+                // Draw entities
+                this.player.draw(this.ctx);
+                this.enemies.forEach(enemy => enemy.draw(this.ctx));
+                this.bullets.forEach(bullet => bullet.draw(this.ctx));
+                this.particles.forEach(particle => particle.draw(this.ctx));
+
+                // Draw minimap
+                this.drawMinimap();
+            }
+
+            drawEnvironment() {
+                // Draw some trees/obstacles
+                this.ctx.fillStyle = '#1a3d1a';
+                for (let i = 0; i < 15; i++) {
+                    const x = (i * 137) % this.canvas.width;
+                    const y = (i * 97) % this.canvas.height;
+                    this.ctx.beginPath();
+                    this.ctx.arc(x, y, 15, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+            }
+
+            drawMinimap() {
+                this.minimapCtx.fillStyle = '#0f2f0f';
+                this.minimapCtx.fillRect(0, 0, 150, 150);
+
+                const scaleX = 150 / this.canvas.width;
+                const scaleY = 150 / this.canvas.height;
+
+                // Draw player
+                this.minimapCtx.fillStyle = '#00ff00';
+                this.minimapCtx.fillRect(this.player.x * scaleX - 2, this.player.y * scaleY - 2, 4, 4);
+
+                // Draw enemies
+                this.minimapCtx.fillStyle = '#ff0000';
+                this.enemies.forEach(enemy => {
+                    this.minimapCtx.fillRect(enemy.x * scaleX - 1, enemy.y * scaleY - 1, 2, 2);
+                });
+            }
+
+            updateHUD() {
+                document.getElementById('health').textContent = Math.max(0, this.player.health);
+                document.getElementById('ammo').textContent = this.player.ammo;
+                document.getElementById('enemies').textContent = this.enemies.length;
+                document.getElementById('score').textContent = this.score;
+            }
+
+            endGame(message) {
+                this.gameRunning = false;
+                document.getElementById('gameOverText').textContent = message;
+                document.getElementById('finalScore').textContent = `Final Score: ${this.score}`;
+                document.getElementById('gameOver').style.display = 'flex';
+            }
+
+            restart() {
+                this.player = new Player(this.canvas.width / 2, this.canvas.height / 2);
+                this.enemies = [];
+                this.bullets = [];
+                this.particles = [];
+                this.score = 0;
+                this.gameRunning = true;
+                this.spawnEnemies(10);
+                document.getElementById('gameOver').style.display = 'none';
+            }
+
+            gameLoop() {
+                this.update();
+                this.render();
+                requestAnimationFrame(() => this.gameLoop());
+            }
+        }
+
+        class Player {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.health = 100;
+                this.maxHealth = 100;
+                this.speed = 5;
+                this.ammo = 30;
+                this.maxAmmo = 30;
+                this.reloadTime = 0;
+            }
+
+            update(dx, dy, canvasWidth, canvasHeight) {
+                if (this.reloadTime > 0) {
+                    this.reloadTime--;
+                    if (this.reloadTime === 0) {
+                        this.ammo = this.maxAmmo;
+                    }
+                }
+
+                this.x += dx * this.speed;
+                this.y += dy * this.speed;
+
+                // Keep player in bounds
+                this.x = Math.max(20, Math.min(canvasWidth - 20, this.x));
+                this.y = Math.max(20, Math.min(canvasHeight - 20, this.y));
+            }
+
+            shoot(targetX, targetY, bullets) {
+                if (this.ammo <= 0 || this.reloadTime > 0) return;
+
+                const angle = Math.atan2(targetY - this.y, targetX - this.x);
+                bullets.push(new Bullet(this.x, this.y, angle, 'player'));
+                this.ammo--;
+            }
+
+            reload() {
+                if (this.ammo < this.maxAmmo && this.reloadTime === 0) {
+                    this.reloadTime = 60; // 1 second at 60fps
+                }
+            }
+
+            takeDamage(damage) {
+                this.health -= damage;
+            }
+
+            draw(ctx) {
+                // Draw health bar
+                ctx.fillStyle = '#333';
+                ctx.fillRect(this.x - 15, this.y - 25, 30, 4);
+                ctx.fillStyle = this.health > 30 ? '#00ff00' : '#ff0000';
+                ctx.fillRect(this.x - 15, this.y - 25, (this.health / this.maxHealth) * 30, 4);
+
+                // Draw player
+                ctx.fillStyle = '#4a90ff';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 15, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 8, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class Enemy {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.health = 50;
+                this.maxHealth = 50;
+                this.speed = 2;
+                this.shootCooldown = 0;
+            }
+
+            update(playerX, playerY, canvasWidth, canvasHeight) {
+                if (this.shootCooldown > 0) this.shootCooldown--;
+
+                // Simple AI: move towards player
+                const dx = playerX - this.x;
+                const dy = playerY - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance > 100) {
+                    this.x += (dx / distance) * this.speed;
+                    this.y += (dy / distance) * this.speed;
+                }
+
+                // Keep enemy in bounds
+                this.x = Math.max(20, Math.min(canvasWidth - 20, this.x));
+                this.y = Math.max(20, Math.min(canvasHeight - 20, this.y));
+            }
+
+            shoot(playerX, playerY, bullets) {
+                if (this.shootCooldown > 0) return;
+
+                const angle = Math.atan2(playerY - this.y, playerX - this.x);
+                bullets.push(new Bullet(this.x, this.y, angle, 'enemy'));
+                this.shootCooldown = 120; // 2 seconds
+            }
+
+            takeDamage(damage) {
+                this.health -= damage;
+            }
+
+            draw(ctx) {
+                // Draw health bar
+                ctx.fillStyle = '#333';
+                ctx.fillRect(this.x - 10, this.y - 20, 20, 3);
+                ctx.fillStyle = '#ff4444';
+                ctx.fillRect(this.x - 10, this.y - 20, (this.health / this.maxHealth) * 20, 3);
+
+                // Draw enemy
+                ctx.fillStyle = '#ff4444';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 12, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class Bullet {
+            constructor(x, y, angle, owner) {
+                this.x = x;
+                this.y = y;
+                this.vx = Math.cos(angle) * 8;
+                this.vy = Math.sin(angle) * 8;
+                this.owner = owner;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+            }
+
+            draw(ctx) {
+                ctx.fillStyle = this.owner === 'player' ? '#ffff00' : '#ff0000';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 4;
+                this.vy = (Math.random() - 0.5) * 4;
+                this.life = 30;
+                this.maxLife = 30;
+                this.color = color;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vx *= 0.98;
+                this.vy *= 0.98;
+                this.life--;
+            }
+
+            draw(ctx) {
+                ctx.save();
+                ctx.globalAlpha = this.life / this.maxLife;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // Start the game
+        const game = new Game();
+    </script>
+</body>
+</html>

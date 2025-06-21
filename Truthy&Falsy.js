@@ -40,3 +40,9 @@ let val1;
 
 val1 = null ?? "Default Value";
 console.log(val1); // Output: "Default Value"
+
+//Ternary Operator Different than Nullish Coalescing Operator
+let userName = "Affan";
+
+userName ==="Affan" ? console.log("User is Affan") : console.log("User is not Affan");
+

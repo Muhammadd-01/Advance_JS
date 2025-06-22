@@ -86,12 +86,12 @@ names.set('name2', 'Rizwan');
 names.set('name3', 'Yasir');
 
 for(const key of names.keys()){
-    console.log(key);
+    //console.log(key);
     
 }
 
 
 for(const [key, value] of names){
-    console.log(key,'=>', value);
+   // console.log(key,'=>', value);
     
 }

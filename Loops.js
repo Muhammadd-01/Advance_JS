@@ -67,3 +67,4 @@
 // }while(i>5)
 
 
+// For of Loop in JavaScript

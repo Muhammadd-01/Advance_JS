@@ -103,7 +103,26 @@ let myObject ={
     "game3":"Free Fire",
 }
 
-for(const key of myObject){
-    //console.log(key);
+// for(const key of myObject){
+   //console.log(key);
+    
+// }
+
+//But we can use for in loop to iterate over keys of Objects and Arrays
+
+let newObject = {
+PK: 'Pakistan',
+Name: 'Affan',
+Age: 23,
+}
+for (const key in newObject) {
+  console.log(`${key}: ${newObject[key]}`);
+  
+}
+
+let newArray = ['Affan', 'Ali', 'Ahmed'];
+
+for(const value in newArray){
+    console.log(newArray[value]);
     
 }

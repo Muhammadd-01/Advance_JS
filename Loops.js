@@ -60,8 +60,10 @@
 
 
 //Do While Loop in JavaScript
-let i =1;
-do{
-    console.log('Hello');
-    i++;
-}while(i>5)
+// let i =1;
+// do{
+//     console.log('Hello');
+//     i++;
+// }while(i>5)
+
+

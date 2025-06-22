@@ -50,10 +50,13 @@
 // } 
 
 
-let myArray= ['Affan','Ali','Ahmed']
+// let myArray= ['Affan','Ali','Ahmed']
 
-let i=0;
-while(i<myArray.length){
-    console.log(myArray[i]);
-    i = i+1;
-}
+// let i=0;
+// while(i<myArray.length){
+//     console.log(myArray[i]);
+//     i = i+1;
+// }
+
+
+//Do While Loop in JavaScript

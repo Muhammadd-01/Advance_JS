@@ -66,5 +66,32 @@
 //     i++;
 // }while(i>5)
 
-
 // For of Loop in JavaScript
+
+
+let myArray = ['Affan', 'Ali', 'Ahmed'];
+
+for(const name of myArray){
+   // console.log(name);
+    
+}
+
+//Map in JavaScript
+
+
+const names = new Map()
+
+names.set('name1', 'Affan');
+names.set('name2', 'Rizwan');
+names.set('name3', 'Yasir');
+
+for(const key of names.keys()){
+    console.log(key);
+    
+}
+
+
+for(const [key, value] of names){
+    console.log(key,'=>', value);
+    
+}

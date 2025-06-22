@@ -41,10 +41,19 @@
 //While loop in Javascript
 
 
-let i = 0;
+// let i = 0;
 
-while(i<=10){
-    console.log(i);
+// while(i<=10){
+//     console.log(i);
    
-    i++;
-} 
+//     i++;
+// } 
+
+
+let myArray= ['Affan','Ali','Ahmed']
+
+let i=0;
+while(i<myArray.length){
+    console.log(myArray[i]);
+    i = i+1;
+}

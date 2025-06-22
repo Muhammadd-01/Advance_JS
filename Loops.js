@@ -95,3 +95,15 @@ for(const [key, value] of names){
    // console.log(key,'=>', value);
     
 }
+
+// Keys and Values in normal object can not be iterated directly using for...of loop.
+let myObject ={
+    "game1":"PUBG",
+    "game2":"COD",
+    "game3":"Free Fire",
+}
+
+for(const key of myObject){
+    //console.log(key);
+    
+}

@@ -120,6 +120,8 @@ for (const key in newObject) {
   
 }
 
+// for of loop can directly print values of Arrays but for in loop can not directly print values of Arrays it print default numbers of Array like 0, 1, 2, etc. We call the keys of Array as indexes in for in loop.
+
 let newArray = ['Affan', 'Ali', 'Ahmed'];
 
 for(const value in newArray){

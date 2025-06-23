@@ -125,8 +125,24 @@ for (const key in newObject) {
 let newArray = ['Affan', 'Ali', 'Ahmed'];
 
 for(const value in newArray){
-    console.log(newArray[value]);
+   // console.log(newArray[value]);
     
 }
 
 //Foreach loop in JavaScript
+
+let myArray2 = ['Affan', 'Ali', 'Ahmed'];
+
+myArray2.forEach(function(item){
+      //console.log(item);
+})
+
+
+myArray2.forEach((item)=>{
+   console.log(item)
+})
+
+myArray2.forEach((item, index, arr)=>{
+   console.log(item, index, arr);
+   
+})

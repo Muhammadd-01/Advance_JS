@@ -128,3 +128,5 @@ for(const value in newArray){
     console.log(newArray[value]);
     
 }
+
+//Foreach loop in JavaScript

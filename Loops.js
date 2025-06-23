@@ -116,7 +116,7 @@ Name: 'Affan',
 Age: 23,
 }
 for (const key in newObject) {
-  console.log(`${key}: ${newObject[key]}`);
+  //console.log(`${key}: ${newObject[key]}`);
   
 }
 
@@ -139,10 +139,21 @@ myArray2.forEach(function(item){
 
 
 myArray2.forEach((item)=>{
-   console.log(item)
+   //console.log(item)
 })
 
 myArray2.forEach((item, index, arr)=>{
-   console.log(item, index, arr);
+ //  console.log(item, index, arr);
+   
+})
+
+let a =[
+   {name: 'Affan', age: 23},
+   {name: 'Ali', age: 24},
+   {name: 'Ahmed', age: 25}
+]
+
+a.forEach((item)=>{
+//console.log(item.name, item.age);
    
 })

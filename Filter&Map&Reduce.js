@@ -2,7 +2,7 @@ const coding = ['cpp', 'java', 'js', 'python'];
 
 
 const code =coding.forEach((item)=>{
-    console.log(item);
+   // console.log(item);
     
 })
 //console.log(code); // undefined, because forEach does not return anything
@@ -30,7 +30,7 @@ const books = [
 
 let userBook = books.filter((bk)=> bk.year >=2000);
 userBook = books.filter((bk)=> {return bk.pages <=250 && bk.genre ==="Fiction"});
-console.log(userBook);
+//console.log(userBook);
 
 
 //Map in JavaScript
@@ -48,8 +48,18 @@ const newNumbers = numbers
 .filter((num)=> num >=20)
 
 
-console.log(newNumbers);
+//console.log(newNumbers);
 
 
 
 //Reduce in JavaScript
+
+
+const num=[1,2,3];
+
+const sum = num.reduce(function(acc, currval) { return acc + currval},0);
+//console.log(sum);
+
+
+const total = num.reduce((acc, currval) => acc + currval, 0);
+console.log(total);

@@ -57,9 +57,9 @@ const newNumbers = numbers
 
 const num=[1,2,3];
 
-const sum = num.reduce(function(acc, currval) { return acc + currval},0);
+const sum = num.reduce(function(acc, currval) { return acc + currval},0); // reduce in simple function 
 //console.log(sum);
 
 
-const total = num.reduce((acc, currval) => acc + currval, 0);
+const total = num.reduce((acc, currval) => acc + currval, 0);// reduce in arrow function
 console.log(total);

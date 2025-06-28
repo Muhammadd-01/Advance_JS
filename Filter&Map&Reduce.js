@@ -31,3 +31,21 @@ const books = [
 let userBook = books.filter((bk)=> bk.year >=2000);
 userBook = books.filter((bk)=> {return bk.pages <=250 && bk.genre ==="Fiction"});
 console.log(userBook);
+
+
+//Map in JavaScript
+
+const numbers = [1, 2, 3, 4, 5];
+
+// const newNumbers=numbers.map((num)=>num * 2);
+
+
+//Chaining Filter and Map
+
+const newNumbers = numbers
+.map((num)=> num*2)
+.map((num)=> num +200)
+.filter((num)=> num >=20)
+
+
+console.log(newNumbers);

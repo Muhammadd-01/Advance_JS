@@ -49,3 +49,7 @@ const newNumbers = numbers
 
 
 console.log(newNumbers);
+
+
+
+//Reduce in JavaScript
